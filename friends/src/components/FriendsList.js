@@ -3,15 +3,11 @@ import Nav from './Nav';
 import axios from 'axios';
 import axiosWithAuth from '../utils/axiosWithAuth'
 import Friend from './friend'
+import AddFriend from './addFriend';
 
 const FriendsList = () => {
 
     const [friends, setFriends] = useState([])
-
-    const submitChanges = (e) => {
-        e.preventDefault();
-        axiosWithAuth().post('http://localhost:5000/api/friends', setFriends)
-    }
 
     const handleChanges = (e) => {
         e.preventDefault()
@@ -20,6 +16,11 @@ const FriendsList = () => {
             ...friends,
             [e.target.name]: e.target.value
         })
+    }
+
+    const submitChanges = (e) => {
+        e.preventDefault();
+        axiosWithAuth().post('http://localhost:5000/api/friends', setFriends)
     }
 
     const getfriends = () => {
@@ -36,22 +37,15 @@ const FriendsList = () => {
 
     useEffect(() => {
         getfriends()
-    }, [])
+    }, [friends])
 
     return (
         <div>
             <p></p>
             <Nav />
             <h5>Friendslist:</h5>
+            <AddFriend />
             <Friend friends={friends}/>
-
-
-            <form onSubmit={submitChanges}>
-                <input type="text" name='name' onChange={handleChanges} placeholder='full name'/>
-                <input type="text" name='age'  onChange={handleChanges} placeholder='age'/>
-                <input type="text" name='email'  onChange={handleChanges} placeholder='email'/>
-                <input type="submit"/>
-            </form>
         </div>
     )
 }
